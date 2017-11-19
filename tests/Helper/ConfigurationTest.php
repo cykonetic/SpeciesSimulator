@@ -53,18 +53,46 @@ class ConfigurationTest extends TestCase
     {
         $config = Configuration::BuildFromConfigArray($config_array);
         $this->assertInstanceOf('cykonetic\SpeciesSimulator\Helper\Configuration', $config);
-
-        return $config;
     }
 
     /**
-     * @depends clone testBuildFromConfigArray_Success
+     * @dataProvider configArrayProvider
      */
-    public function testConfigurationGetHabitats(Configuration $config)
+    public function testGetHabitats(array $config_array)
     {
-       $habitats = $config->getHabitats();
-       $this->assertCount(1, $habitats);
-       $this->assertInstanceOf('cykonetic\SpeciesSimulation\Habitat', $habitats[0]);
+        $config = Configuration::BuildFromConfigArray($config_array);
+        $habitats = $config->getHabitats();
+        $this->assertCount(1, $habitats);
+        $this->assertInstanceOf('cykonetic\SpeciesSimulator\Habitat', $habitats[0]);
+    }
+
+    /**
+     * @dataProvider configArrayProvider
+     */
+    public function testGetSpecies(array $config_array)
+    {
+        $config = Configuration::BuildFromConfigArray($config_array);
+        $species = $config->getSpecies();
+        $this->assertCount(1, $species);
+        $this->assertInstanceOf('cykonetic\SpeciesSimulator\Species', $species[0]);
+    }
+
+    /**
+     * @dataProvider configArrayProvider
+     */
+    public function testGetLength(array $config_array)
+    {
+        $config = Configuration::BuildFromConfigArray($config_array);
+        $this->assertEquals(12, $config->getLength());
+    }
+
+    /**
+     * @dataProvider configArrayProvider
+     */
+    public function testGetIterations(array $config_array)
+    {
+        $config = Configuration::BuildFromConfigArray($config_array);
+        $this->assertEquals(1, $config->getIterations());
     }
 
     /**
