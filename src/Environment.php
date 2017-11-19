@@ -31,9 +31,8 @@ class Environment
      * @param Habitat $habitat type of habitat
      * @param int     $month   month of simulation
      */
-    function __construct(Habitat $habitat, $month) 
+    public function __construct(Habitat $habitat, $month)
     {
-
         $this->currentFood  = $habitat->getFood();
         $this->currentWater = $habitat->getWater();
         $this->currentTemp  = $habitat->getTemperature($month);
@@ -44,9 +43,8 @@ class Environment
      *
      * @return int
      */
-    public function getFood() 
+    public function getFood()
     {
-
         return $this->currentFood;
     }
 
@@ -55,9 +53,8 @@ class Environment
      *
      * @return int
      */
-    public function getWater() 
+    public function getWater()
     {
-
         return $this->currentWater;
     }
 
@@ -66,9 +63,8 @@ class Environment
      *
      * @return int
      */
-    public function getTemperature() 
+    public function getTemperature()
     {
-
         return $this->currentTemp;
     }
 
@@ -78,9 +74,8 @@ class Environment
      * @param  \Species $species species to feed
      * @return boolean
      */
-    public function consumedFood(Species $species) 
+    public function consumedFood(Species $species)
     {
-
         $this->currentFood -= $species->getRequiredFood();
 
         return (0 <= $this->currentFood);
@@ -94,7 +89,6 @@ class Environment
      */
     public function consumedWater(Species $species)
     {
-
         $this->currentWater -= $species->getRequiredWater();
 
         return (0 <= $this->currentWater);

@@ -5,17 +5,16 @@ namespace cykonetic\SpeciesSimulator\Helper;
 
 use Exception;
 use Symfony\Component\Yaml\Yaml;
-use cykonetic\SpeciesSimulator\{Habitat,Species};
+use cykonetic\SpeciesSimulator\Habitat;
+use cykonetic\SpeciesSimulator\Species;
 
 class Configuration
 {
-
     public static function BuildFromConfigArray(array $config_array) : Configuration
     {
         if (!(isset($config_array['habitats']) and is_array($config_array['habitats']) and count($config_array['habitats']))) {
             throw new Exception('Required key `habitats` is empty or not set.');
-        }
-        elseif (!(isset($config_array['species']) and is_array($config_array['species']) and count($config_array['species']))) {
+        } elseif (!(isset($config_array['species']) and is_array($config_array['species']) and count($config_array['species']))) {
             throw new Exception('Required key `species` is empty or not set.');
         }
 

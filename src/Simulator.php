@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * Simulation Class applies time to each species in each habitat and records the outcome
  *
@@ -33,97 +33,96 @@ use cykonetic\SpeciesSimulator\Helper\PopulationStats;
  * 12 * years "ticks" amd records the results.
  */
 
-class Simulator {
-	/**
-	 * Array of habitats in which simulations occur.
-	 *
-	 * @var \Habitat[]
-	 */
-	protected $habitats;
+class Simulator
+{
+    /**
+     * Array of habitats in which simulations occur.
+     *
+     * @var \Habitat[]
+     */
+    protected $habitats;
 
-	/**
-	 * Arrray of species to simulate.
-	 *
-	 * @var \Species[]
-	 */
-	protected $species;
+    /**
+     * Arrray of species to simulate.
+     *
+     * @var \Species[]
+     */
+    protected $species;
 
-	/**
-	 * Simulation length (months) length of simulation in month.
-	 *
-	 * @var int
-	 */
-	protected $length;
+    /**
+     * Simulation length (months) length of simulation in month.
+     *
+     * @var int
+     */
+    protected $length;
 
-	/**
-	 * Tracks the current state of a simulation.
-	 *
-	 * @var \Population[]
-	 */
-	protected $populations = array();
+    /**
+     * Tracks the current state of a simulation.
+     *
+     * @var \Population[]
+     */
+    protected $populations = array();
 
-	/**
-	 * Weather or not the simulations has been run yet.
-	 *
-	 * @var boolean simulation state
-	 */
-	protected $ran = false;
+    /**
+     * Weather or not the simulations has been run yet.
+     *
+     * @var boolean simulation state
+     */
+    protected $ran = false;
     protected $ready = false;
 
-	/**
-	 * Simulation constructor.
-	 *
-	 * @param \DatalotSim\Habitat[] $habitats all habitats to be simulated
-	 * @param \DatalotSim\Species[] $species  all species to be simulated
-	 * @param int                   $years    number of years to simulate
-	 */
-	public function __construct($config_yaml = null)
+    /**
+     * Simulation constructor.
+     *
+     * @param \DatalotSim\Habitat[] $habitats all habitats to be simulated
+     * @param \DatalotSim\Species[] $species  all species to be simulated
+     * @param int                   $years    number of years to simulate
+     */
+    public function __construct($config_yaml = null)
     {
         if ($config_yaml !== null) {
-            
         }
         //array $habitats, array $species, $years
-		$this->habitats = $habitats;
-		$this->species  = $species;
-		$this->length   = $years*12;
-	}
+        $this->habitats = $habitats;
+        $this->species  = $species;
+        $this->length   = $years*12;
+    }
 
-	/**
-	 * Executes configured simulaions.
-	 *
-	 * @return null
-	 */
-	public function run()
+    /**
+     * Executes configured simulaions.
+     *
+     * @return null
+     */
+    public function run()
     {
-		if (!$this->ran) {
-			foreach ($this->habitats as $habitat) {
-				foreach ($this->species as $species) {
-					$population = new Population($habitat, $species);
-					for ($tick = 0; $tick < $this->length; $tick++) {
-						$population->simulate($tick+1);
-					}
-					$this->populations[] = $population;
-				}
-			}
-			$this->ran = true;
-		}
-	}
+        if (!$this->ran) {
+            foreach ($this->habitats as $habitat) {
+                foreach ($this->species as $species) {
+                    $population = new Population($habitat, $species);
+                    for ($tick = 0; $tick < $this->length; $tick++) {
+                        $population->simulate($tick+1);
+                    }
+                    $this->populations[] = $population;
+                }
+            }
+            $this->ran = true;
+        }
+    }
 
-	/**
-	 * Retrieves populations stats for the simulation.
-	 *
-	 * @return \PopulationStats[]
-	 */
-	public function getSimulationStats()
+    /**
+     * Retrieves populations stats for the simulation.
+     *
+     * @return \PopulationStats[]
+     */
+    public function getSimulationStats()
     {
-		if (!$this->ran) {
-			$this->run();
-		}
-		$stats = array();
-		foreach ($this->populations as $population) {
-			$stats[] = $population->getPopulationData();
-		}
-		return $stats;
-	}
-
+        if (!$this->ran) {
+            $this->run();
+        }
+        $stats = array();
+        foreach ($this->populations as $population) {
+            $stats[] = $population->getPopulationData();
+        }
+        return $stats;
+    }
 }

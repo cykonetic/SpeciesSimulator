@@ -10,7 +10,6 @@ namespace cykonetic\SpeciesSimulator;
  */
 class Habitat
 {
-
     const WINTER = 'winter';
     const SPRING = 'spring';
     const SUMMER = 'summer';
@@ -50,7 +49,7 @@ class Habitat
 
     /**
      * Habitat constructor.
-     * 
+     *
      * @param string $name
      */
     public function __construct(string $name, int $monthly_food, int $monthly_water, array $average_temperature)
@@ -76,16 +75,17 @@ class Habitat
      *
      * @return int amount of food per month
      */
-    public function getFood() : int {
+    public function getFood() : int
+    {
         return $this->food;
     }
 
     /**
      * Returns the current water level.
-     * 
+     *
      * @return int amount of water per month
      */
-    public function getWater() 
+    public function getWater()
     {
         return $this->water;
     }
@@ -96,7 +96,7 @@ class Habitat
      * @param int $month
      * @return int random temperature based on month
      */
-    public function getTemperature($month) 
+    public function getTemperature($month)
     {
         //normal fluctuation of 5 degrees with .5% chance of 15
         $max_range = !rand(0, 199) ? 15 : 5;
@@ -105,5 +105,4 @@ class Habitat
         //apply it to the average temperature and return
         return $this->avg_temp[self::getSeason($month)] + $deviation;
     }
-
 }

@@ -27,13 +27,17 @@
  */
 namespace cykonetic\SpeciesSimulator;
 
-use cykonetic\SpeciesSimulator\Exception\{AgedException,BurnedException,FrozeException,StarvedException,ThirstedException};
+use cykonetic\SpeciesSimulator\Exception\AgedException;
+use cykonetic\SpeciesSimulator\Exception\BurnedException;
+use cykonetic\SpeciesSimulator\Exception\FrozeException;
+use cykonetic\SpeciesSimulator\Exception\StarvedException;
+use cykonetic\SpeciesSimulator\Exception\ThirstedException;
 
 // {{{ Animal
 
 /**
  * Animal
- * 
+ *
  * Simulates an indiviual within a Population
  */
 class Animal
@@ -88,14 +92,13 @@ class Animal
 
     /**
      * Animal Constructor.
-     * 
+     *
      * @param \DatalotSim\Species $species Type of animal
      * @param string $gender Male| Female| null(randomly decide)
      *
      */
-    function __construct(Species $species, $gender = null) 
+    public function __construct(Species $species, $gender = null)
     {
-
         $this->species = $species;
 
         if (!$gender) {
@@ -110,11 +113,9 @@ class Animal
      *
      * @return boolean
      */
-    public function isMale() 
+    public function isMale()
     {
-
         return (self::MALE == $this->gender);
-
     }
 
     /**
@@ -122,11 +123,9 @@ class Animal
      *
      * @return boolean
      */
-    public function isFemale() 
+    public function isFemale()
     {
-
         return (self::FEMALE == $this->gender);
-
     }
 
     /**
@@ -134,14 +133,12 @@ class Animal
      *
      * @return boolean
      */
-    public function isMature() 
+    public function isMature()
     {
-
         return (
          ($this->species->getMinimumBreeding()*12) <= $this->age &&
          ($this->species->getMaximumBreeding()*12) >= $this->age
         );
-
     }
 
     /**
@@ -149,11 +146,9 @@ class Animal
      *
      * @return boolean
      */
-    public function isPregnant() 
+    public function isPregnant()
     {
-
         return $this->gestation > 0;
-
     }
 
     /**
@@ -163,14 +158,12 @@ class Animal
      *
      * @throws \DatalotSim\Exceptions\StarvedException
      */
-    protected function eat(Environment $environment) 
+    protected function eat(Environment $environment)
     {
-
         $this->hunger += 1;
 
         if ($environment->consumedFood($this->species)) {
             $this->hunger = 0;
-
         } elseif (2 < $this->hunger) {
             throw new StarvedException();
         }
@@ -180,12 +173,11 @@ class Animal
      * Determines if an animal drinks or dies.
      *
      * @param  \DatalotSim\Environment $environment The envronment.
-     * 
+     *
      * @throws \DatalotSim\Exceptions\ThirstedException
      */
     protected function drink(Environment $environment)
     {
-
         if (!$environment->consumedWater($this->species)) {
             throw new ThirstedException();
         }
@@ -196,9 +188,8 @@ class Animal
      *
      * @throws \DatalotSim\Exceptions\AgedException
      */
-    protected function age() 
+    protected function age()
     {
-
         $this->age += 1;
 
         if (($this->species->getMaximumAge()*12) < $this->age) {
@@ -210,17 +201,15 @@ class Animal
      * Determines if an animal survives the environments temperature or dies.
      *
      * @param  \DatalotSim\Environment $environment The envronment.
-     * 
+     *
      * @throws \DatalotSim\Exceptions\BurnedException
      * @throws \DatalotSim\Exceptions\FrozeException
      */
-    protected function weather(Environment $environment) 
+    protected function weather(Environment $environment)
     {
-
         if ($environment->getTemperature() > $this->species->getMaximumTolerance()) {
             throw new BurnedException();
-        }
-        elseif ($environment->getTemperature() < $this->species->getMinimumTolerance()) {
+        } elseif ($environment->getTemperature() < $this->species->getMinimumTolerance()) {
             throw new FrozeException();
         }
     }
@@ -230,9 +219,8 @@ class Animal
      *
      * @param  \DatalotSim\Environment $environment The envronment.
      */
-    public function copulate(Environment $environment) 
+    public function copulate(Environment $environment)
     {
-
         if ($this->isFemale()
             && $this->isMature()
             && !$this->isPregnant()
@@ -251,7 +239,6 @@ class Animal
      */
     public function gestate()
     {
-
         $this->gestation += 1;
 
         if ($this->species->getGestationPeriod() < $this->gestation) {
@@ -266,9 +253,8 @@ class Animal
      *
      * @return \DatalotSim\Animal
      */
-    private function birth() 
+    private function birth()
     {
-
         $this->gestation = 0;
 
         return new Animal($this->species);
@@ -276,15 +262,14 @@ class Animal
 
     /**
      * Determines survival for this animal in the given environment.
-     * 
+     *
      * The animal must weather the temperature, eat, drink, and get older.
      * These will be randomized for each creature each month.
      *
      * @param \DatalotSim\Environment $environment The envronment.
      */
-    public function survive(Environment $environment) 
+    public function survive(Environment $environment)
     {
-
         $toSurvive = array('weather', 'eat', 'drink', 'age');
 
         shuffle($toSurvive);

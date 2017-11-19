@@ -32,7 +32,7 @@ class PopulationData
      * @param Habitat $habitat
      * @param Species $species
      */
-    function __construct(Habitat $habitat, Species $species)
+    public function __construct(Habitat $habitat, Species $species)
     {
         $this->habitat = $habitat;
         $this->species = $species;
@@ -56,7 +56,7 @@ class PopulationData
      * @param string $name
      * @param mixed  $value
      */
-    public function __set($name, $value) 
+    public function __set($name, $value)
     {
         $this->raw_stats[$name] = $value;
     }
@@ -67,7 +67,7 @@ class PopulationData
      * @param  string $name
      * @return mixed
      */
-    public function __get($name) 
+    public function __get($name)
     {
         if (!array_key_exists($name, $this->raw_stats)) {
             $trace = debug_backtrace();
@@ -135,7 +135,7 @@ class PopulationData
      */
     public function getThirstRate() : float
     {
-        return ($this->thirst / $this->died ) * 100;
+        return ($this->thirst / $this->died) * 100;
     }
 
     /**
@@ -145,7 +145,7 @@ class PopulationData
      */
     public function getAgeRate() : float
     {
-        return ($this->age / $this->died ) * 100;
+        return ($this->age / $this->died) * 100;
     }
 
     /**
@@ -173,7 +173,7 @@ class PopulationData
      *
      * @param \PopulationStats $mergingStats
      */
-    public function merge(PopulationData $mergeData) 
+    public function merge(PopulationData $mergeData)
     {
         foreach (array_keys($this->raw_stats) as $key) {
             switch ($key) {
@@ -191,7 +191,7 @@ class PopulationData
     /**
      * Render stats to screen
      */
-    public function render() 
+    public function render()
     {
         echo "$this->species_name\n";
         echo "\t$this->habitat_name\n";
@@ -205,5 +205,4 @@ class PopulationData
         echo "\t\t\tcold_weather: ".sprintf('%01.2f%%', $this->getFrozenRate())."\n";
         echo "\t\t\thot_weather: ".sprintf('%01.2f%%', $this->getBurnedRate())."\n";
     }
-
 }

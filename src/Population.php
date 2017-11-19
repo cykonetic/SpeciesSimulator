@@ -2,7 +2,11 @@
 namespace cykonetic\SpeciesSimulator;
 
 #use cykonetic\SpeciesSimulator\{Animal,Environment,Habitat,Species};
-use cykonetic\SpeciesSimulator\Exception\{AgedException,BurnedException,FrozeException,StarvedException,ThirstedException};
+use cykonetic\SpeciesSimulator\Exception\AgedException;
+use cykonetic\SpeciesSimulator\Exception\BurnedException;
+use cykonetic\SpeciesSimulator\Exception\FrozeException;
+use cykonetic\SpeciesSimulator\Exception\StarvedException;
+use cykonetic\SpeciesSimulator\Exception\ThirstedException;
 use cykonetic\SpeciesSimulator\Helper\{PopulationStats};
 
 /**
@@ -38,7 +42,7 @@ class Population
      * @param Habitat $habitat given habitat
      * @param Species $species given species
      */
-    function __construct(Habitat $habitat, Species $species) 
+    public function __construct(Habitat $habitat, Species $species)
     {
         $this->habitat      = $habitat;
         $this->species      = $species;
@@ -53,7 +57,7 @@ class Population
      *
      * @return string name of habitat
      */
-    public function getHabitatName() 
+    public function getHabitatName()
     {
         return $this->habitat->getName();
     }
@@ -62,7 +66,7 @@ class Population
      *
      * @return string name of species
      */
-    public function getSpeciesName() 
+    public function getSpeciesName()
     {
         return $this->species->getName();
     }
@@ -71,7 +75,7 @@ class Population
      *
      * @param int $month simulate life for given month
      */
-    public function simulate($month) 
+    public function simulate($month)
     {
         $this->stats->months += 1;
         $environment = new Environment($this->habitat, $month);
@@ -90,38 +94,31 @@ class Population
      *
      * @param \Environment $environment
      */
-    protected function survive(Environment $environment) 
+    protected function survive(Environment $environment)
     {
-
         $survived = array();
         shuffle($this->animals);
 
         while ($animal = array_pop($this->animals)) {
-
             try {
                 $animal->survive($environment);
                 $survived[] = $animal;
-
             } catch (BurnedException $e) {
                 //they all burn
                 $this->stats->died += 1+count($this->animals);
                 $this->stats->hot_weather += 1+count($this->animals);
                 $this->animals = array();
-
             } catch (FrozeException $e) {
                 //they all freeze
                 $this->stats->died += 1+count($this->animals);
                 $this->stats->cold_weather += 1+count($this->animals);
                 $this->animals = array();
-
             } catch (AgedException $e) {
                 $this->stats->died += 1;
                 $this->stats->age += 1;
-
             } catch (StarvedException $e) {
                 $this->stats->died += 1;
                 $this->stats->starvation += 1;
-
             } catch (ThirstedException $e) {
                 $this->stats->died += 1+count($this->animals);
                 $this->stats->thirst += 1+count($this->animals);
@@ -137,9 +134,8 @@ class Population
      *
      * @param \Environment $environment
      */
-    protected function breed(Environment $environment) 
+    protected function breed(Environment $environment)
     {
-
         $new_generation = array();
 
         foreach ($this->animals as $animal) {
@@ -172,7 +168,7 @@ class Population
      *
      * @return boolean
      */
-    protected function hasViableMale() 
+    protected function hasViableMale()
     {
         foreach ($this->animals as $animal) {
             if ($animal->isMale() && $animal->isMature()) {
@@ -188,10 +184,11 @@ class Population
      *
      * @return \Animal[]
      */
-    protected function getViableMales() 
+    protected function getViableMales()
     {
         return array_filter(
-            $this->animals, function ($animal) {
+            $this->animals,
+            function ($animal) {
                 return ($animal->isMale() && $animal->isMature());
             }
         );
@@ -202,9 +199,8 @@ class Population
      *
      * @return \PopulationStats
      */
-    public function getPopulationStats() 
+    public function getPopulationStats()
     {
         return $this->stats;
     }
-
 }

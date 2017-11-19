@@ -26,6 +26,7 @@
  * DatalotSim.
  */
 namespace cykonetic\SpeciesSimulator;
+
 /**
  * Species
  *
@@ -64,7 +65,7 @@ class Species
     
     /**
      * Species Constructor.
-     * 
+     *
      * @param array $speciesConfig Data about a type of creature
      */
     public function __construct(string $name, array $attributes)
@@ -85,18 +86,16 @@ class Species
      */
     public function getName() : string
     {
-
         return $this->name;
     }
 
     /**
      * Return monthly food requirement.
-     * 
+     *
      * @return int monthly food requirement
      */
     public function getRequiredFood() : int
     {
-
         return $this->attributes[self::EATS];
     }
 
@@ -107,29 +106,26 @@ class Species
      */
     public function getRequiredWater() : int
     {
-
         return $this->attributes[self::DRINKS];
     }
 
     /**
      * Return the highest survivable temperature.
-     * 
+     *
      * @return int highest survivable 0temperature
      */
     public function getMaximumTolerance() : int
     {
-
         return $this->attributes[self::MAX_TEMP];
     }
 
     /**
      * Return the lowest survivable temperature.
-     * 
+     *
      * @return int lowest survivable temperature
      */
     public function getMinimumTolerance() : int
     {
-
         return $this->attributes[self::MIN_TEMP];
     }
 
@@ -140,18 +136,16 @@ class Species
      */
     public function getMaximumBreeding() : int
     {
-
         return $this->attributes[self::MAX_AGE];
     }
 
     /**
      * Return the youngest breeding age (years).
-     * 
+     *
      * @return int youngest breeding age (years)
      */
     public function getMinimumBreeding() : int
     {
-
         return $this->attributes[self::MIN_AGE];
     }
 
@@ -162,7 +156,6 @@ class Species
      */
     public function getGestationPeriod() : int
     {
-
         return $this->attributes[self::GESTATION];
     }
 
@@ -173,8 +166,6 @@ class Species
      */
     public function getMaximumAge() : int
     {
-
         return $this->attributes[self::LIVES];
     }
-
 }
