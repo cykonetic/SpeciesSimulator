@@ -49,9 +49,63 @@ class ConfigurationTest extends TestCase
     /**
      * @dataProvider configArrayProvider
      */
-    public function testBuildFromArray($config_array)
+    public function testBuildFromConfigArray_Success(array $config_array)
     {
-        $config = Configuration::BuildFromArray($config_array);
-        $this->assertInstanceOf('Configuration', $config);
+        $config = Configuration::BuildFromConfigArray($config_array);
+        $this->assertInstanceOf('cykonetic\SpeciesSimulator\Helper\Configuration', $config);
+
+        return $config;
+    }
+
+    /**
+     * @depends clone testBuildFromConfigArray_Success
+     */
+    public function testConfigurationGetHabitats(Configuration $config)
+    {
+       $habitats = $config->getHabitats();
+       $this->assertCount(1, $habitats);
+       $this->assertInstanceOf('cykonetic\SpeciesSimulation\Habitat', $habitats[0]);
+    }
+
+    /**
+     * @dataProvider configArrayProvider
+     * @expectedException        Exception
+     * @expectedExceptionMessage Required key `habitats` is empty or not set.
+     */
+    public function testBuildFromConfigArray_FailNoHabitat($config_array)
+    {
+        unset($config_array['habitats']);
+        $config = Configuration::BuildFromConfigArray($config_array);
+    }
+
+    /**
+     * @dataProvider configArrayProvider
+     * @expectedException        Exception
+     * @expectedExceptionMessage Required key `species` is empty or not set.
+     */
+    public function testBuildFromConfigArray_FailNoSpecies($config_array)
+    {
+        unset($config_array['species']);
+        $config = Configuration::BuildFromConfigArray($config_array);
+    }
+
+    /**
+     * @dataProvider configArrayProvider
+     */
+    public function testBuildFromConfigArray_DefaultNoYears($config_array)
+    {
+        unset($config_array['years']);
+        $config = Configuration::BuildFromConfigArray($config_array);
+        $this->assertEquals(1200, $config->getLength());
+    }
+
+    /**
+     * @dataProvider configArrayProvider
+     */
+    public function testBuildFromConfigArray_DefaultNoIterations($config_array)
+    {
+        unset($config_array['iterations']);
+        $config = Configuration::BuildFromConfigArray($config_array);
+        $this->assertEquals(10, $config->getIterations());
     }
 }

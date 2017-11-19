@@ -5,7 +5,7 @@ namespace cykonetic\SpeciesSimulator\Helper;
 
 use Exception;
 use Symfony\Component\Yaml\Yaml;
-#use cykonetic\SpeciesSimulator\{Habitat,Species};
+use cykonetic\SpeciesSimulator\{Habitat,Species};
 
 class Configuration
 {
@@ -33,9 +33,9 @@ class Configuration
             $species[] = new Species($name, $attributes);
         }
 
-        $length = 100;
-        if (isset($config_array['length']) and is_numeric($config_array['length'])) {
-            $length = intval($config_array['length']);
+        $years = 100;
+        if (isset($config_array['years']) and is_numeric($config_array['years'])) {
+            $years = intval($config_array['years']);
         }
 
         $iterations = 10;
@@ -43,7 +43,7 @@ class Configuration
             $iterations = intval($config_array['iterations']);
         }
 
-        return new Configuration($habitats, $species, $length, $iterations);
+        return new Configuration($habitats, $species, $years, $iterations);
     }
 
     public static function BuildFromYamlFile(string $config_yaml) : Configuration
@@ -54,16 +54,16 @@ class Configuration
         return self::BuildFromArray(Yaml::parse(file_get_contents($config_yaml)));
     }
 
-    protected $habitats = array();
-    protected $species = array();
-    protected $length = 100;
-    protected $iterations = 10;
+    protected $habitats;
+    protected $species;
+    protected $length;
+    protected $iterations;
     
-    public function __construct(array $habitats, array $species, int $length, int $iterations)
+    public function __construct(array $habitats, array $species, int $years = 100, int $iterations = 10)
     {
         $this->habitats = $habitats;
         $this->species = $species;
-        $this->length = $length;
+        $this->length = $years * 12;
         $this->iterations = $iterations;
     }
     
@@ -77,9 +77,9 @@ class Configuration
         return $this->species;
     }
     
-    public function getLength(bool $as_years = false) : int
+    public function getLength() : int
     {
-        return $this->length * ($as_years ? 1 : 12);
+        return $this->length;
     }
     
     public function getIterations() : int
