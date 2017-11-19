@@ -2,46 +2,16 @@
 namespace cykonetic\SpeciesSimulator;
 
 #use cykonetic\SpeciesSimulator\{Animal,Environment,Habitat,Species};
-use cykonetic\SpeciesSimulator\Exception\AgedException;
-use cykonetic\SpeciesSimulator\Exception\BurnedException;
-use cykonetic\SpeciesSimulator\Exception\FrozeException;
-use cykonetic\SpeciesSimulator\Exception\StarvedException;
-use cykonetic\SpeciesSimulator\Exception\ThirstedException;
-use cykonetic\SpeciesSimulator\Helper\{PopulationStats};
-
-/**
- * An instance of a species in a habitat
- */
+use cykonetic\SpeciesSimulator\Exception\{AgedException,BurnedException,FrozeException,StarvedException,ThirstedException};
 
 class Population
 {
 
-    /**
-     *
-     * @var Habitat
-     */
     protected $habitat;
-    /**
-     *
-     * @var Species
-     */
     protected $species;
-    /**
-     *
-     * @var Animal[] current population
-     */
     protected $animals;
-    /**
-     *
-     * @var PopulationStats population stats
-     */
     protected $stats;
 
-    /**
-     *
-     * @param Habitat $habitat given habitat
-     * @param Species $species given species
-     */
     public function __construct(Habitat $habitat, Species $species)
     {
         $this->habitat      = $habitat;
@@ -53,28 +23,16 @@ class Population
         $this->stats->lived = 2;
     }
 
-    /**
-     *
-     * @return string name of habitat
-     */
     public function getHabitatName()
     {
         return $this->habitat->getName();
     }
 
-    /**
-     *
-     * @return string name of species
-     */
     public function getSpeciesName()
     {
         return $this->species->getName();
     }
 
-    /**
-     *
-     * @param int $month simulate life for given month
-     */
     public function simulate($month)
     {
         $this->stats->months += 1;
@@ -89,11 +47,6 @@ class Population
         }
     }
 
-    /**
-     * check each animals attempt to survive the month
-     *
-     * @param \Environment $environment
-     */
     protected function survive(Environment $environment)
     {
         $survived = array();
@@ -129,11 +82,6 @@ class Population
         $this->animals = $survived;
     }
 
-    /**
-     * check the populations breeding and births
-     *
-     * @param \Environment $environment
-     */
     protected function breed(Environment $environment)
     {
         $new_generation = array();
@@ -163,11 +111,6 @@ class Population
         }
     }
 
-    /**
-     * checks the population for a mature male
-     *
-     * @return boolean
-     */
     protected function hasViableMale()
     {
         foreach ($this->animals as $animal) {
@@ -178,12 +121,6 @@ class Population
         return false;
     }
 
-    /**
-     * return an array of all mature males
-     * (not needed for this project)
-     *
-     * @return \Animal[]
-     */
     protected function getViableMales()
     {
         return array_filter(
@@ -194,11 +131,6 @@ class Population
         );
     }
 
-    /**
-     * returns vital statistics for this population
-     *
-     * @return \PopulationStats
-     */
     public function getPopulationStats()
     {
         return $this->stats;

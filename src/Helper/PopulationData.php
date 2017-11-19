@@ -1,37 +1,15 @@
 <?php
 namespace cykonetic\SpeciesSimulator\Helper;
 
-#use cykonetic\SpeciesSimulator\{Habitat, Species};
+use cykonetic\SpeciesSimulator\{Habitat, Species};
 
-/**
- * statistical data regarding a population
- */
 class PopulationData
 {
 
-    /**
-     *
-     * @var string name of habitat
-     */
     protected $habitat;
-
-    /**
-     *
-     * @var string name of species
-     */
     protected $species;
-
-    /**
-     *
-     * @var array raw population stats
-     */
     protected $raw_data;
 
-    /**
-     *
-     * @param Habitat $habitat
-     * @param Species $species
-     */
     public function __construct(Habitat $habitat, Species $species)
     {
         $this->habitat = $habitat;
@@ -50,23 +28,11 @@ class PopulationData
         );
     }
 
-    /**
-     * sets raw stat value
-     *
-     * @param string $name
-     * @param mixed  $value
-     */
     public function __set($name, $value)
     {
         $this->raw_stats[$name] = $value;
     }
 
-    /**
-     * returns raw stat value
-     *
-     * @param  string $name
-     * @return mixed
-     */
     public function __get($name)
     {
         if (!array_key_exists($name, $this->raw_stats)) {
@@ -78,101 +44,51 @@ class PopulationData
         return $this->raw_stats[$name];
     }
 
-    /**
-     * getter for habitat name
-     *
-     * @return string
-     */
     public function getHabitatName() : string
     {
         return $this->habitat->getName();
     }
 
-    /**
-     * getter for soecies name
-     *
-     * @return string
-     */
     public function getSpeciesName() : string
     {
         return $this->species->getName();
     }
 
-    /**
-     * getter for avarage population
-     *
-     * @return float
-     */
     public function getAveragePopulation() : float
     {
         return $this->agg_population / $this->months;
     }
 
-    /**
-     * getter for mortality rate (%)
-     *
-     * @return float
-     */
     public function getMortalityRate() : float
     {
         return ($this->died / $this->lived) * 100;
     }
 
-    /**
-     * getter for starvation rate (%)
-     *
-     * @return float
-     */
     public function getStarvationRate() : float
     {
         return ($this->starvation / $this->died) * 100;
     }
 
-    /**
-     * getter for dehydration rate (%)
-     *
-     * @return float
-     */
     public function getThirstRate() : float
     {
         return ($this->thirst / $this->died) * 100;
     }
 
-    /**
-     * getter for old age rate (%)
-     *
-     * @return float
-     */
     public function getAgeRate() : float
     {
         return ($this->age / $this->died) * 100;
     }
 
-    /**
-     * getter for frozen rate (%)
-     *
-     * @return float
-     */
     public function getFrozenRate() : float
     {
         return ($this->cold_weather / $this->died) * 100;
     }
 
-    /**
-     * getter for burned rate (%)
-     *
-     * @return float
-     */
     public function getBurnedRate() : float
     {
         return ($this->hot_weather / $this->died) * 100;
     }
 
-    /**
-     * combine another PopulationStat with this
-     *
-     * @param \PopulationStats $mergingStats
-     */
     public function merge(PopulationData $mergeData)
     {
         foreach (array_keys($this->raw_stats) as $key) {
@@ -188,9 +104,6 @@ class PopulationData
         }
     }
 
-    /**
-     * Render stats to screen
-     */
     public function render()
     {
         echo "$this->species_name\n";

@@ -3,11 +3,6 @@ declare(strict_types = 1);
 
 namespace cykonetic\SpeciesSimulator;
 
-/**
- * Habitat
- *
- * Exposes configuration values for a habitat
- */
 class Habitat
 {
     const WINTER = 'winter';
@@ -15,18 +10,6 @@ class Habitat
     const SUMMER = 'summer';
     const FALL   = 'fall';
 
-    /**
-     * Returns the season based on an integer 1...12.
-     *
-     * The raw month counter is modded by 12 and that result determines the season
-     * * 0, 1, 2 - Winter
-     * * 3, 4, 5 - Spring
-     * * 6, 7, 8 - Summer
-     * * 9, 10, 11 - Fall
-     *
-     * @param int $month
-     * @return string the season for the month
-     */
     public static function getSeason(int $month) : string
     {
         $month_of_year = $month % 12;
@@ -47,11 +30,6 @@ class Habitat
     protected $water;
     protected $avg_temp;
 
-    /**
-     * Habitat constructor.
-     *
-     * @param string $name
-     */
     public function __construct(string $name, int $monthly_food, int $monthly_water, array $average_temperature)
     {
         $this->name = $name;
@@ -60,42 +38,21 @@ class Habitat
         $this->avg_temp = $average_temperature;
     }
 
-    /**
-     * Returns the name of the habitat.
-     *
-     * @return string habitat name
-     */
     public function getName() : string
     {
         return $this->name;
     }
 
-    /**
-     * Returns the current food level.
-     *
-     * @return int amount of food per month
-     */
     public function getFood() : int
     {
         return $this->food;
     }
 
-    /**
-     * Returns the current water level.
-     *
-     * @return int amount of water per month
-     */
     public function getWater()
     {
         return $this->water;
     }
 
-    /**
-     * Returns the temperature with deviation for the given month.
-     *
-     * @param int $month
-     * @return int random temperature based on month
-     */
     public function getTemperature($month)
     {
         //normal fluctuation of 5 degrees with .5% chance of 15
