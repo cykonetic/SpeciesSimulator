@@ -10,7 +10,7 @@ use cykonetic\SpeciesSimulator\Species;
 
 class Configuration
 {
-    public static function BuildFromConfigArray(array $config_array) : Configuration
+    public static function buildFromConfigArray(array $config_array) : Configuration
     {
         if (!(isset($config_array['habitats']) and is_array($config_array['habitats']) and count($config_array['habitats']))) {
             throw new Exception('Required key `habitats` is empty or not set.');
@@ -45,12 +45,12 @@ class Configuration
         return new Configuration($habitats, $species, $years, $iterations);
     }
 
-    public static function BuildFromYamlFile(string $config_yaml) : Configuration
+    public static function buildFromYamlFile(string $config_yaml) : Configuration
     {
         if (!file_exists($config_yaml)) {
             throw new Exception("Unable to open `$config_yaml`");
         }
-        return self::BuildFromArray(Yaml::parse(file_get_contents($config_yaml)));
+        return self::buildFromArray(Yaml::parse(file_get_contents($config_yaml)));
     }
 
     protected $habitats;

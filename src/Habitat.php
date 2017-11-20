@@ -12,6 +12,7 @@ class Habitat
 
     public static function getSeason(int $month) : string
     {
+        //this also conveniently makes December == 0
         $month_of_year = $month % 12;
 
         if ($month_of_year < 3) {
@@ -21,7 +22,6 @@ class Habitat
         } elseif ($month_of_year < 9) {
             return self::SUMMER;
         }
-
         return self::FALL;
     }
 

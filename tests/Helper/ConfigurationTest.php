@@ -51,7 +51,7 @@ class ConfigurationTest extends TestCase
      */
     public function testBuildFromConfigArray_Success(array $config_array)
     {
-        $config = Configuration::BuildFromConfigArray($config_array);
+        $config = Configuration::buildFromConfigArray($config_array);
         $this->assertInstanceOf('cykonetic\SpeciesSimulator\Helper\Configuration', $config);
     }
 
@@ -60,7 +60,7 @@ class ConfigurationTest extends TestCase
      */
     public function testGetHabitats(array $config_array)
     {
-        $config = Configuration::BuildFromConfigArray($config_array);
+        $config = Configuration::buildFromConfigArray($config_array);
         $habitats = $config->getHabitats();
         $this->assertCount(1, $habitats);
         $this->assertInstanceOf('cykonetic\SpeciesSimulator\Habitat', $habitats[0]);
@@ -71,7 +71,7 @@ class ConfigurationTest extends TestCase
      */
     public function testGetSpecies(array $config_array)
     {
-        $config = Configuration::BuildFromConfigArray($config_array);
+        $config = Configuration::buildFromConfigArray($config_array);
         $species = $config->getSpecies();
         $this->assertCount(1, $species);
         $this->assertInstanceOf('cykonetic\SpeciesSimulator\Species', $species[0]);
@@ -82,7 +82,7 @@ class ConfigurationTest extends TestCase
      */
     public function testGetLength(array $config_array)
     {
-        $config = Configuration::BuildFromConfigArray($config_array);
+        $config = Configuration::buildFromConfigArray($config_array);
         $this->assertEquals(12, $config->getLength());
     }
 
@@ -91,7 +91,7 @@ class ConfigurationTest extends TestCase
      */
     public function testGetIterations(array $config_array)
     {
-        $config = Configuration::BuildFromConfigArray($config_array);
+        $config = Configuration::buildFromConfigArray($config_array);
         $this->assertEquals(1, $config->getIterations());
     }
 
@@ -103,7 +103,7 @@ class ConfigurationTest extends TestCase
     public function testBuildFromConfigArray_FailNoHabitat($config_array)
     {
         unset($config_array['habitats']);
-        $config = Configuration::BuildFromConfigArray($config_array);
+        $config = Configuration::buildFromConfigArray($config_array);
     }
 
     /**
@@ -114,7 +114,7 @@ class ConfigurationTest extends TestCase
     public function testBuildFromConfigArray_FailNoSpecies($config_array)
     {
         unset($config_array['species']);
-        $config = Configuration::BuildFromConfigArray($config_array);
+        $config = Configuration::buildFromConfigArray($config_array);
     }
 
     /**
@@ -123,7 +123,7 @@ class ConfigurationTest extends TestCase
     public function testBuildFromConfigArray_DefaultNoYears($config_array)
     {
         unset($config_array['years']);
-        $config = Configuration::BuildFromConfigArray($config_array);
+        $config = Configuration::buildFromConfigArray($config_array);
         $this->assertEquals(1200, $config->getLength());
     }
 
@@ -133,7 +133,7 @@ class ConfigurationTest extends TestCase
     public function testBuildFromConfigArray_DefaultNoIterations($config_array)
     {
         unset($config_array['iterations']);
-        $config = Configuration::BuildFromConfigArray($config_array);
+        $config = Configuration::buildFromConfigArray($config_array);
         $this->assertEquals(10, $config->getIterations());
     }
 }

@@ -6,7 +6,7 @@ use Exception;
 /**
  * Exception thrown when an animal dies from low temperature
  */
-class FrozeException extends Exception
+class Froze extends Exception
 {
     public function __construct()
     {

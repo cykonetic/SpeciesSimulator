@@ -1,91 +1,97 @@
 <?php
 namespace cykonetic\SpeciesSimulator;
 
-use cykonetic\SpeciesSimulator\Exception\{AgedException,BurnedException,FrozeException,StarvedException,ThirstedException};
+use cykonetic\SpeciesSimulator\Exception\{Dehydrated, Froze, NaturalCauses, Overheated, Starved};
 
 class Animal
 {
 
     const MALE   = 'male';
     const FEMALE = 'female';
-    
+
     protected $species;
     protected $gender;
     protected $age = 0;
     protected $hunger = 0;
     protected $gestation = 0;
     
-    public function __construct(Species $species, $gender = null)
+    public function __construct(Species $species, string $gender = 'unknown')
     {
         $this->species = $species;
 
-        if (!$gender) {
-            $gender = rand(0, 1)?self::MALE:self::FEMALE;
+        if (!in_array($gender, array(self::FEMALE, self::MALE))) {
+            $gender = rand(0, 1) ? self::FEMALE : self::MALE;
         }
 
         $this->gender = $gender;
     }
 
-    public function isMale()
+    public function isMale() : bool
     {
-        return (self::MALE == $this->gender);
+        return (self::MALE === $this->gender);
     }
 
-    public function isFemale()
+    public function isFemale() : bool
     {
-        return (self::FEMALE == $this->gender);
+        return (self::FEMALE === $this->gender);
     }
 
-    public function isMature()
+    public function isMature() : bool
     {
-        return (
-         ($this->species->getMinimumBreeding()*12) <= $this->age &&
-         ($this->species->getMaximumBreeding()*12) >= $this->age
-        );
+        return ($this->species->getMinimumBreeding() * 12 <= $this->age)
+            && ($this->species->getMaximumBreeding() * 12 >= $this->age);
     }
 
-    public function isPregnant()
+    public function isPregnant() : bool
     {
         return $this->gestation > 0;
     }
 
-    protected function eat(Environment $environment)
+    protected function eat(Environment $environment) : self
     {
         $this->hunger += 1;
 
-        if ($environment->consumedFood($this->species)) {
+        if ($environment->provideFood($this->species->getRequiredFood())) {
             $this->hunger = 0;
         } elseif (2 < $this->hunger) {
-            throw new StarvedException();
+            throw new Starved();
         }
+        
+        return $this;
     }
 
-    protected function drink(Environment $environment)
+    protected function drink(Environment $environment) : self
     {
-        if (!$environment->consumedWater($this->species)) {
-            throw new ThirstedException();
+        if (!$environment->provideWater($this->species->getRequiredWater())) {
+            throw new Dehydrated();
         }
+
+        return $this;
     }
 
-    protected function age()
+    protected function age() : self
     {
         $this->age += 1;
 
-        if (($this->species->getMaximumAge()*12) < $this->age) {
-            throw new AgedException();
+        if ($this->species->getMaximumAge() * 12 < $this->age) {
+            throw new NaturalCauses();
         }
+
+        return $this;
     }
 
-    protected function weather(Environment $environment)
+    protected function tolerate(Environment $environment) : self
     {
         if ($environment->getTemperature() > $this->species->getMaximumTolerance()) {
-            throw new BurnedException();
+            throw new Overheated();
         } elseif ($environment->getTemperature() < $this->species->getMinimumTolerance()) {
-            throw new FrozeException();
+            throw new Froze();
         }
+
+        return $this;
     }
 
-    public function copulate(Environment $environment)
+    public function copulate(Environment $environment) : self
     {
         if ($this->isFemale()
             && $this->isMature()
@@ -96,9 +102,11 @@ class Animal
         ) {
             $this->gestate();
         }
+        
+        return $this;
     }
 
-    public function gestate()
+    public function gestate() : ?Animal
     {
         $this->gestation += 1;
 
@@ -109,21 +117,28 @@ class Animal
         return null;
     }
 
-    private function birth()
+    private function birth() : Animal
     {
         $this->gestation = 0;
 
         return new Animal($this->species);
     }
 
-    public function survive(Environment $environment)
+    public function survive(Environment $environment) : self
     {
-        $toSurvive = array('weather', 'eat', 'drink', 'age');
+        $activities = array('age','drink','eat','tolerate');
 
-        shuffle($toSurvive);
+        shuffle($activities);
 
-        foreach ($toSurvive as $do) {
-            $this->$do($environment);
+        foreach ($activities as $doIt) {
+            if ('age' === $doIt) {
+                $this->age();
+            } else {
+                #$this->$doIt($environment);
+                call_user_func(array($this, $doIt), $environment);
+            }
         }
+
+        return $this;
     }
 }

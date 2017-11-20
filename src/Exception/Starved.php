@@ -6,7 +6,7 @@ use Exception;
 /**
  * Exception thrown when an animal dies from starvation
  */
-class StarvedException extends Exception
+class Starved extends Exception
 {
     public function __construct()
     {

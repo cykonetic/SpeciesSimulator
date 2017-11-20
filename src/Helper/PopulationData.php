@@ -28,22 +28,6 @@ class PopulationData
         );
     }
 
-    public function __set($name, $value)
-    {
-        $this->raw_stats[$name] = $value;
-    }
-
-    public function __get($name)
-    {
-        if (!array_key_exists($name, $this->raw_stats)) {
-            $trace = debug_backtrace();
-            $message = sprintf('Undefined property via __get(): in %s on line %s', $name, $trace[0]['file'], $trace[0]['line']);
-            trigger_error($message, E_USER_ERROR);
-        }
-            
-        return $this->raw_stats[$name];
-    }
-
     public function getHabitatName() : string
     {
         return $this->habitat->getName();
@@ -54,54 +38,182 @@ class PopulationData
         return $this->species->getName();
     }
 
-    public function getAveragePopulation() : float
+    public function getLength() : int
     {
-        return $this->agg_population / $this->months;
+        return $this->raw_data['months'];
+    }
+
+    public function incrementLength(int $months = 1) : self
+    {
+        $this->raw_data['months'] += $months;
+    }
+
+    public function getLived() : int
+    {
+        return $this->raw_data['lived'];
+    }
+
+    public function incrementLived(int $lives) : self
+    {
+        $this->raw_data['lived'] += $lives;
+
+        return $this;
+    }
+
+    public function getDied() : int
+    {
+        return $this->raw_data['died'];
+    }
+
+    public function incrementDied(int $deaths) : self
+    {
+        $this->raw_data['died'] += $deaths;
+
+        return $this;
     }
 
     public function getMortalityRate() : float
     {
-        return ($this->died / $this->lived) * 100;
+        return ($this->raw_data['died'] / $this->raw_data['lived']) * 100;
+    }
+
+    public function getMaxPopulation() : int
+    {
+        return $this->raw_data['max_population'];
+    }
+    
+    public function setMaxPopulation(int $population_size) : self
+    {
+        if ($this->raw_data['max_population'] < $population_size) {
+            $this->raw_data['max_population'] = $population_size;
+        }
+
+        return $this;
+    }
+
+    public function getAggeregatePopulaation() : int
+    {
+        return $this->raw_data['agg_population'];
+    }
+
+    public function incrementAggregatePopulation(int $population_size) : self
+    {
+        $this->raw_data['agg_population'] += $population_size;
+
+        return $this;
+    }
+
+    public function getAveragePopulation() : float
+    {
+        return $this->raw_data['agg_population'] / $this->raw_data['months'];
+    }
+
+    public function getStarved() : int
+    {
+        return $this->raw_data['starvation'];
+    }
+
+    public function incrementStarved(int $deaths) : self
+    {
+        $this->raw_data['starvation'] += $deaths;
+
+        return $this;
     }
 
     public function getStarvationRate() : float
     {
-        return ($this->starvation / $this->died) * 100;
+        return ($this->raw_data['starvation'] / $this->died) * 100;
     }
 
-    public function getThirstRate() : float
+    public function getDehydrated() : int
     {
-        return ($this->thirst / $this->died) * 100;
+        return $this->raw_data['thirst'];
     }
 
-    public function getAgeRate() : float
+    public function incrementDehydrated(int $deaths) : self
     {
-        return ($this->age / $this->died) * 100;
+        $this->raw_data['thirst'] += $deaths;
+
+        return $this;
     }
 
-    public function getFrozenRate() : float
+    public function getDehydrationRate() : float
     {
-        return ($this->cold_weather / $this->died) * 100;
+        return ($this->raw_data['thirst'] / $this->raw_data['died']) * 100;
     }
 
-    public function getBurnedRate() : float
+    public function getNaturalCauses() : int
     {
-        return ($this->hot_weather / $this->died) * 100;
+        return $this->raw_data['age'];
     }
 
-    public function merge(PopulationData $mergeData)
+    public function incrementNaturalCauses(int $deaths) : self
     {
-        foreach (array_keys($this->raw_stats) as $key) {
+        $this->raw_data['age'] += $deaths;
+
+        return $this;
+    }
+
+    public function getNaturalCausesRate() : float
+    {
+        return ($this->raw_data['age'] / $this->raw_data['died']) * 100;
+    }
+
+    public function getFroze() : int
+    {
+        return $this->raw_data['cold_weather'];
+    }
+
+    public function incrementFroze(int $deaths) : self
+    {
+        $this->raw_data['cold_weather'] += $deaths;
+
+        return $this;
+    }
+
+    public function getFrozeRate() : float
+    {
+        return ($this->raw_data['cold_weather'] / $this->raw_data['died']) * 100;
+    }
+
+    public function getOverHeated() : int
+    {
+        return $this->raw_data['hot_weather'];
+    }
+
+    public function incrementOverHeated(int $deaths) : self
+    {
+        $this->raw_data['hot_weather'] += $deaths;
+
+        return $this;
+    }
+
+    public function getOverHeatedRate() : float
+    {
+        return ($this->raw_data['hot_weather'] / $this->raw_data['died']) * 100;
+    }
+
+    public function getRawData() : array
+    {
+        return $this->raw_data;
+    }
+
+    public function merge(PopulationData $merge_data) : self
+    {
+        $merge_raw_data = $merge_data->getRawData();
+        foreach (array_keys($this->raw_data) as $key) {
             switch ($key) {
                 case 'max_population':
-                    if ($this->raw_data[$key] < $mergeData->$key) {
-                        $this->raw_data[$key] = $mergeData->$key;
+                    if ($this->raw_data['max_population'] < $merge_raw_data['max_population']) {
+                        $this->raw_data['max_population'] = $merge_raw_data['max_population'];
                     }
                     break;
                 default:
-                    $this->raw_data[$key] += $mergeData->$key;
+                    $this->raw_data[$key] += $merge_raw_data[$key];
             }
         }
+        
+        return $this;
     }
 
     public function render()
@@ -113,9 +225,9 @@ class PopulationData
         echo "\t\tMoratality Rate: ".sprintf('%01.2f%%', $this->getMortalityRate())."\n";
         echo "\t\tCause of Death:\n";
         echo "\t\t\tstarvation: ".sprintf('%01.2f%%', $this->getStarvationRate())."\n";
-        echo "\t\t\tthirst: ".sprintf('%01.2f%%', $this->getThirstRate())."\n";
-        echo "\t\t\tage: ".sprintf('%01.2f%%', $this->getAgeRate())."\n";
-        echo "\t\t\tcold_weather: ".sprintf('%01.2f%%', $this->getFrozenRate())."\n";
-        echo "\t\t\thot_weather: ".sprintf('%01.2f%%', $this->getBurnedRate())."\n";
+        echo "\t\t\tthirst: ".sprintf('%01.2f%%', $this->getDehydrationRate())."\n";
+        echo "\t\t\tage: ".sprintf('%01.2f%%', $this->getNaturalCausesRate())."\n";
+        echo "\t\t\tcold_weather: ".sprintf('%01.2f%%', $this->getFrozeRate())."\n";
+        echo "\t\t\thot_weather: ".sprintf('%01.2f%%', $this->getOverHeatedRate())."\n";
     }
 }

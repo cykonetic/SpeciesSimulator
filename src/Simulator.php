@@ -1,7 +1,7 @@
 <?php
 namespace cykonetic\SpeciesSimulator;
 
-use cykonetic\SpeciesSimulator\Helper\PopulationStats;
+use cykonetic\SpeciesSimulator\Helper\{Configuration, PopulationStats};
 
 
 class Simulator
@@ -10,30 +10,29 @@ class Simulator
     protected $habitats;
     protected $species;
     protected $length;
+    protected $iterations;
     protected $populations = array();
     protected $ran = false;
-    protected $ready = false;
 
-    public function __construct($config_yaml = null)
+    public function __construct(Configuration $config)
     {
-        if ($config_yaml !== null) {
-        }
-        //array $habitats, array $species, $years
-        $this->habitats = $habitats;
-        $this->species  = $species;
-        $this->length   = $years*12;
+        $this->habitats = $config->getHabitats();
+        $this->species = $config->getSpecies();
+        $this->length = $config->getLength();
+        $this->iterations = $config->getIterations();
     }
 
     public function run()
     {
         if (!$this->ran) {
-            foreach ($this->habitats as $habitat) {
-                foreach ($this->species as $species) {
-                    $population = new Population($habitat, $species);
-                    for ($tick = 0; $tick < $this->length; $tick++) {
-                        $population->simulate($tick+1);
+            for ($i = 0; $i < $this->iterations; $i++) {
+                foreach ($this->habitats as $habitat) {
+                    foreach ($this->species as $species) {
+                        $this->populations[] = new Population($habitat, $species);
                     }
-                    $this->populations[] = $population;
+                }
+                for ($tick = 0; $tick < $this->length; $tick++) {
+                    $population->simulate($tick+1);
                 }
             }
             $this->ran = true;
