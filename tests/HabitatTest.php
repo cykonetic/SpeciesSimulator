@@ -76,7 +76,8 @@ class HabitatTest extends TestCase
 
         for ($month = 0; $month < 12; $month++) {
 
-            $agg_temperature = $max_temperature = $min_temperature = $avg_temp[Habitat::getSeason($month)];
+            $max_temperature = $min_temperature = $avg_temp[Habitat::getSeason($month)];
+            $agg_temperature =  0;
 
             //$temps = array();
             for ($trial = 0; $trial < 1000; $trial++) {
