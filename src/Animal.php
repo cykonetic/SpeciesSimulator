@@ -1,4 +1,20 @@
 <?php
+/**
+ * Therapy group data template.
+ *
+ * @package   OpenEMR
+ * @link      http://www.open-emr.org
+ * @author Nicholai Bush <nicholaibush@yahoo.com>
+ * @copyright Copyright (c) 2017 Nicholai Bush <nicholaibush@yahoo.com>
+ * @license   https://github.com/
+ */
+/**
+ *
+ */
+
+/**
+ * @package cykonetic\SpeciesSimulator
+ */
 namespace cykonetic\SpeciesSimulator;
 
 use cykonetic\SpeciesSimulator\Exception\Dehydrated;
@@ -7,6 +23,9 @@ use cykonetic\SpeciesSimulator\Exception\NaturalCauses;
 use cykonetic\SpeciesSimulator\Exception\Overheated;
 use cykonetic\SpeciesSimulator\Exception\Starved;
 
+/**
+ * Summary
+ */
 class Animal
 {
     const MALE   = 'male';
@@ -152,7 +171,7 @@ class Animal
     /**
      * Determines if an animal becomes pregnant.
      *
-     * @param Environment $environment Description
+     * @param Environment $environment is the animal's current habitat
      *
      * @return Animal which is a reference to $this
      */
@@ -199,7 +218,7 @@ class Animal
      * This method randomizes the order for each animal and attempts to complete
      * all four.
      *
-     * @param Environment $environment Description
+     * @param Environment $environment is the animal's current habitat
      *
      * @return Type        Description
      */
