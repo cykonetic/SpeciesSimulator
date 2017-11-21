@@ -42,17 +42,8 @@ class Population
         $this->stats->incrementLength();
 
         $environment = new Environment($this->habitat, $month);
-
-        $this->survive($environment)->breed($environment);
-
-        $population_size = count($this->animals);
-        $this->stats->incrementAggregatePopulation($population_size)
-                    ->setMaxPopulation($population_size);
-    }
-
-    protected function survive(Environment $environment) : self
-    {
         $survived = array();
+
         shuffle($this->animals);
 
         while ($animal = array_pop($this->animals)) {
@@ -82,18 +73,7 @@ class Population
                             ->incrementDehydrated($deaths);
                 $this->animals = array();
             }
-        }
 
-        $this->animals = $survived;
-
-        return $this;
-    }
-
-    protected function breed(Environment $environment) : self
-    {
-        $newGeneration = array();
-
-        foreach ($this->animals as $animal) {
             switch (true) {
             case $animal->isMale():
                 break;
@@ -101,23 +81,21 @@ class Population
             case $animal->isPregnant():
                 $offspring = $animal->gestate();
                 if ($offspring !== null) {
-                    $newGeneration[] = $offspring;
+                    $survived[] = $offspring;
+                    $this->stats->incrementLived();
                 }
                 break;
 
             case ($animal->isMature() && $this->hasViableMale()):
                 $animal->copulate($environment);
-                break;
-
             }
         }
 
-        if (count($newGeneration)) {
-            $this->stats->lived += count($newGeneration);
-            $this->animals = array_merge($this->animals, $newGeneration);
-        }
+        $this->animals = $survived;
 
-        return $this;
+        $population_size = count($this->animals);
+        $this->stats->incrementAggregatePopulation($population_size)
+                    ->setMaxPopulation($population_size);
     }
 
     protected function hasViableMale() : bool

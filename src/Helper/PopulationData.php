@@ -53,7 +53,7 @@ class PopulationData
         return $this->raw_data['lived'];
     }
 
-    public function incrementLived(int $lives) : self
+    public function incrementLived(int $lives = 1) : self
     {
         $this->raw_data['lived'] += $lives;
 
@@ -81,7 +81,7 @@ class PopulationData
     {
         return $this->raw_data['max_population'];
     }
-    
+
     public function setMaxPopulation(int $population_size) : self
     {
         if ($this->raw_data['max_population'] < $population_size) {
@@ -212,7 +212,7 @@ class PopulationData
                     $this->raw_data[$key] += $merge_raw_data[$key];
             }
         }
-        
+
         return $this;
     }
 
