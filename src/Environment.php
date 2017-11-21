@@ -1,11 +1,8 @@
 <?php
 namespace cykonetic\SpeciesSimulator;
 
-use cykonetic\SpeciesSimulator\Exception\{Drought, Famine}
-
 class Environment
 {
-
     protected $currentFood;
     protected $currentWater;
     protected $currentTemp;
@@ -36,7 +33,7 @@ class Environment
     {
         $this->currentFood -= $units;
 
-       return (0 <= $this->currentFood);
+        return (0 <= $this->currentFood);
     }
 
     public function provideWater(int $units) : bool

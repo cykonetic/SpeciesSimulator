@@ -2,12 +2,15 @@
 namespace cykonetic\SpeciesSimulator;
 
 #use cykonetic\SpeciesSimulator\{Animal,Environment,Habitat,Species};
-use cykonetic\SpeciesSimulator\Exception\{Dehydrated, Froze, NaturalCauses, Overheated, Starved};
+use cykonetic\SpeciesSimulator\Exception\Dehydrated;
+use cykonetic\SpeciesSimulator\Exception\Froze;
+use cykonetic\SpeciesSimulator\Exception\NaturalCauses;
+use cykonetic\SpeciesSimulator\Exception\Overheated;
+use cykonetic\SpeciesSimulator\Exception\Starved;
 use cykonetic\SpeciesSimulator\Helper\PopulationData;
 
 class Population
 {
-
     protected $habitat;
     protected $species;
     protected $animals;
@@ -18,8 +21,8 @@ class Population
         $this->habitat = $habitat;
         $this->species = $species;
         $this->animals = array();
-        $this->animals[] = new Animal($this->species, Animal::MALE);
-        $this->animals[] = new Animal($this->species, Animal::FEMALE);
+        $this->animals[] = new Animal($species, Animal::MALE);
+        $this->animals[] = new Animal($species, Animal::FEMALE);
         $this->stats = new PopulationData($habitat, $species);
         $this->stats->incrementLived(2);
     }
@@ -34,7 +37,7 @@ class Population
         return $this->species->getName();
     }
 
-    public function simulate($month) : self
+    public function simulate($month)
     {
         $this->stats->incrementLength();
 
@@ -45,8 +48,6 @@ class Population
         $population_size = count($this->animals);
         $this->stats->incrementAggregatePopulation($population_size)
                     ->setMaxPopulation($population_size);
-
-        return $this;
     }
 
     protected function survive(Environment $environment) : self
@@ -61,7 +62,7 @@ class Population
                 //they all overheat
                 $deaths = count($this->animals) + 1;
                 $this->stats->incrementDeaths($deaths)
-                            ->incrementOverHeated($deaths);
+                            ->incrementOverheated($deaths);
                 $this->animals = array();
             } catch (Froze $e) {
                 //they all freeze
@@ -73,17 +74,18 @@ class Population
                 $this->stats->incrementDeaths(1)
                             ->incrementNaturalCauses(1);
             } catch (StarvedException $e) {
-                $this->stats->died += 1;
-                $this->stats->starvation += 1;
+                $this->stats->incrementDeaths(1)
+                            ->incrementStarvation(1);
             } catch (ThirstedException $e) {
-                $this->stats->died += count($this->animals) + 1;
-                $this->stats->thirst += count($this->animals) + 1;
+                $deaths = count($this->animals) + 1;
+                $this->stats->incrementDeaths($deaths)
+                            ->incrementDehydrated($deaths);
                 $this->animals = array();
             }
         }
 
         $this->animals = $survived;
-        
+
         return $this;
     }
 

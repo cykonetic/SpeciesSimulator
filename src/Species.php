@@ -6,7 +6,6 @@ use ReflectionClass;
 
 class Species
 {
-
     const GESTATION = 'gestation_period';
     const LIVES     = 'life_span';
     const MAX_AGE   = 'maximum_breeding_age';
@@ -29,7 +28,6 @@ class Species
 
     public function __construct(string $name, array $attributes)
     {
-
         $keys = array_keys($attributes);
         sort($keys);
         if (self::getAttributeList() !== $keys) {

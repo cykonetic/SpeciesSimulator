@@ -1,11 +1,11 @@
 <?php
 namespace cykonetic\SpeciesSimulator\Helper;
 
-use cykonetic\SpeciesSimulator\{Habitat, Species};
+use cykonetic\SpeciesSimulator\Habitat;
+use cykonetic\SpeciesSimulator\Species;
 
 class PopulationData
 {
-
     protected $habitat;
     protected $species;
     protected $raw_data;

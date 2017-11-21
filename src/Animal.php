@@ -1,11 +1,14 @@
 <?php
 namespace cykonetic\SpeciesSimulator;
 
-use cykonetic\SpeciesSimulator\Exception\{Dehydrated, Froze, NaturalCauses, Overheated, Starved};
+use cykonetic\SpeciesSimulator\Exception\Dehydrated;
+use cykonetic\SpeciesSimulator\Exception\Froze;
+use cykonetic\SpeciesSimulator\Exception\NaturalCauses;
+use cykonetic\SpeciesSimulator\Exception\Overheated;
+use cykonetic\SpeciesSimulator\Exception\Starved;
 
 class Animal
 {
-
     const MALE   = 'male';
     const FEMALE = 'female';
 
