@@ -1,4 +1,12 @@
 <?php
+/**
+ * SpeciesSimulator/Environment.php
+ *
+ * @link      https://github.com/cykonetic/species-simulator
+ * @author    Nicholai Bush <nicholaibush@yahoo.com>
+ * @copyright Copyright (c) 2017 Nicholai Bush <nicholaibush@yahoo.com>
+ * @license   https://raw.githubusercontent.com/cykonetic/species-simulator/master/MIT.license.txtdataProvider
+ */
 declare(strict_types=1);
 
 namespace cykonetic\SpeciesSimulator\Helper;
@@ -57,7 +65,7 @@ class Configuration
     protected $species;
     protected $length;
     protected $iterations;
-    
+
     public function __construct(array $habitats, array $species, int $years = 100, int $iterations = 10)
     {
         $this->habitats = $habitats;
@@ -65,22 +73,22 @@ class Configuration
         $this->length = $years * 12;
         $this->iterations = $iterations;
     }
-    
+
     public function getHabitats() : array
     {
         return $this->habitats;
     }
-    
+
     public function getSpecies() : array
     {
         return $this->species;
     }
-    
+
     public function getLength() : int
     {
         return $this->length;
     }
-    
+
     public function getIterations() : int
     {
         return $this->iterations;

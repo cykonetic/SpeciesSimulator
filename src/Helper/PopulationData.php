@@ -1,4 +1,14 @@
 <?php
+/**
+ * SpeciesSimulator/Helper/PopulationData.php
+ *
+ * @link      https://github.com/cykonetic/species-simulator
+ * @author    Nicholai Bush <nicholaibush@yahoo.com>
+ * @copyright Copyright (c) 2017 Nicholai Bush <nicholaibush@yahoo.com>
+ * @license   https://raw.githubusercontent.com/cykonetic/species-simulator/master/MIT.license.txtdataProvider
+ */
+declare(strict_types=1);
+
 namespace cykonetic\SpeciesSimulator\Helper;
 
 use cykonetic\SpeciesSimulator\Habitat;

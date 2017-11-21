@@ -1,20 +1,15 @@
 <?php
 /**
- * Therapy group data template.
+ * SpeciesSimulator/Animal.php
  *
- * @package   OpenEMR
- * @link      http://www.open-emr.org
- * @author Nicholai Bush <nicholaibush@yahoo.com>
+ * @package   cykonetic\SpeciesSimulator
+ * @link      https://github.com/cykonetic/species-simulator
+ * @author    Nicholai Bush <nicholaibush@yahoo.com>
  * @copyright Copyright (c) 2017 Nicholai Bush <nicholaibush@yahoo.com>
- * @license   https://github.com/
+ * @license   https://raw.githubusercontent.com/cykonetic/species-simulator/master/MIT.license.txtdataProvider
  */
-/**
- *
- */
+declare(strict_types = 1);
 
-/**
- * @package cykonetic\SpeciesSimulator
- */
 namespace cykonetic\SpeciesSimulator;
 
 use cykonetic\SpeciesSimulator\Exception\Dehydrated;
@@ -24,7 +19,7 @@ use cykonetic\SpeciesSimulator\Exception\Overheated;
 use cykonetic\SpeciesSimulator\Exception\Starved;
 
 /**
- * Summary
+ * Represents an incarnation of a species
  */
 class Animal
 {

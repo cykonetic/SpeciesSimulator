@@ -1,4 +1,15 @@
 <?php
+/**
+ * SpeciesSimulator/Population.php
+ *
+ * @package   cykonetic\SpeciesSimulator
+ * @link      https://github.com/cykonetic/species-simulator
+ * @author    Nicholai Bush <nicholaibush@yahoo.com>
+ * @copyright Copyright (c) 2017 Nicholai Bush <nicholaibush@yahoo.com>
+ * @license   https://raw.githubusercontent.com/cykonetic/species-simulator/master/MIT.license.txtdataProvider
+ */
+declare(strict_types = 1);
+
 namespace cykonetic\SpeciesSimulator;
 
 #use cykonetic\SpeciesSimulator\{Animal,Environment,Habitat,Species};
@@ -9,6 +20,9 @@ use cykonetic\SpeciesSimulator\Exception\Overheated;
 use cykonetic\SpeciesSimulator\Exception\Starved;
 use cykonetic\SpeciesSimulator\Helper\PopulationData;
 
+/**
+ * Summary
+ */
 class Population
 {
     protected $habitat;
