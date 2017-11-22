@@ -1,7 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use cykonetic\SpeciesSimulator\{Environment, Habitat};
+use cykonetic\SpeciesSimulator\Environment;
+use cykonetic\SpeciesSimulator\Habitat;
 
 class EnvironmentTest extends TestCase
 {

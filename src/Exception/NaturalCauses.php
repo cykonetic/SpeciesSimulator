@@ -1,9 +1,11 @@
 <?php
-
 namespace cykonetic\SpeciesSimulator\Exception;
 
 use Exception;
 
+/**
+ * Summary
+ */
 class NaturalCauses extends Exception
 {
     public function __construct()

@@ -17,7 +17,6 @@ use cykonetic\SpeciesSimulator\Exception\Froze;
 use cykonetic\SpeciesSimulator\Exception\NaturalCauses;
 use cykonetic\SpeciesSimulator\Exception\Overheated;
 use cykonetic\SpeciesSimulator\Exception\Starved;
-
 /**
  * Represents an incarnation of a species
  */
