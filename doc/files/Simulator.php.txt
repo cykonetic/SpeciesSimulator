@@ -82,6 +82,9 @@ class Simulator
                         $population = new Population($habitat, $species);
                         for ($tick = 0; $tick < $this->length; $tick++) {
                             $population->simulate($tick + 1);
+                            if (0 === $population->getPopulationSize()) {
+                                break;
+                            }
                         }
                         $this->stats[] = $population->getPopulationData();
                         $this->summary[$habitat->getName()][$species->getName()]->merge($population->getPopulationData());
