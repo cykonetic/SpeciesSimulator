@@ -21,11 +21,11 @@ use cykonetic\SpeciesSimulator\Helper\PopulationStats;
 class Simulator
 {
     /**
-     * @var Habitat[] the set of habitats to simulate
+     * @var \cykonetic\SpeciesSimulator\Habitat[] the set of habitats to simulate
      */
     protected $habitats;
     /**
-     * @var Species[] the set of species to simulate
+     * @var \cykonetic\SpeciesSimulator\Species[] the set of species to simulate
      */
     protected $species;
     /**
@@ -37,11 +37,11 @@ class Simulator
      */
     protected $iterations;
     /**
-     * @var PopulationData[] Description
+     * @var cykonetic\SpeciesSimulator\\Helper\PopulationData[] Description
      */
     protected $stats = array();
     /**
-     * @var PopulationData[][] summary stats
+     * @var \cykonetic\SpeciesSimulator\Helper\PopulationData[][] summary stats
      */
     protected $summary = array();
     /**
@@ -54,7 +54,7 @@ class Simulator
      *
      * Runs the configured simulkation
      *
-     * @param Configuration $config
+     * @param \cykonetic\SpeciesSimulator\Helper\Configuration $config
      *
      * @return Simulator
      */
@@ -99,7 +99,7 @@ class Simulator
     /**
      * Gets the population's logged data.
      *
-     * @return PopulationData[] population's logged data
+     * @return \cykonetic\SpeciesSimulator\Helper\PopulationData[] population's logged data
      */
     public function getSimulationStats() : array
     {
@@ -113,9 +113,9 @@ class Simulator
     /**
      * Gets a summary of the population's logged data.
      *
-     * @return PopulationData summary of population's logged data
+     * @return \cykonetic\SpeciesSimulator\Helper\PopulationData[][] summary of population's logged data
      */
-    public function getSummarySimulationStats() : PopulationData
+    public function getSummarySimulationStats() : array
     {
         if (!$this->ran) {
             $this->run();
