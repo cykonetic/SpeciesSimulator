@@ -1,6 +1,6 @@
 <?php
 /**
- * SpeciesSimulator/Environment.php
+ * SpeciesSimulator/Environment.php.
  *
  * @package   cykonetic\SpeciesSimulator
  * @link      https://github.com/cykonetic/species-simulator
@@ -13,47 +13,85 @@ declare(strict_types = 1);
 namespace cykonetic\SpeciesSimulator;
 
 /**
- * Summary
+ * An instance of the given habitat for the given month.
  */
 class Environment
 {
-    protected $currentFood;
-    protected $currentWater;
-    protected $currentTemp;
+    /**
+     * @var int current remaining food
+     */
+    protected $current_food;
+    /**
+     * @var int current remaining water
+     */
+    protected $current_water;
+    /**
+     * @var int current temperature
+     */
+    protected $current_temp;
 
     public function __construct(Habitat $habitat, int $month)
     {
-        $this->currentFood  = $habitat->getFood();
-        $this->currentWater = $habitat->getWater();
-        $this->currentTemp  = $habitat->getTemperature($month);
+        $this->current_food  = $habitat->getFood();
+        $this->current_water = $habitat->getWater();
+        $this->current_temp  = $habitat->getTemperature($month);
     }
 
+    /**
+     * Gets current food.
+     *
+     * @return int current food
+     */
     public function getFood() : int
     {
-        return $this->currentFood;
+        return $this->current_food;
     }
 
+    /**
+     * Gets current water.
+     *
+     * @return int current water
+     */
     public function getWater() : int
     {
-        return $this->currentWater;
+        return $this->current_water;
     }
 
+    /**
+     * Gets current temperature.
+     *
+     * @return int current temperature
+     */
     public function getTemperature() : int
     {
-        return $this->currentTemp;
+        return $this->current_temp;
     }
 
+    /**
+     * Attempts to provide given number of food units
+     *
+     * @param int     $units amount of food requested
+     *
+     * @return bool    true if units are available, otherwise false
+     */
     public function provideFood(int $units) : bool
     {
-        $this->currentFood -= $units;
+        $this->current_food -= $units;
 
-        return (0 <= $this->currentFood);
+        return (0 <= $this->current_food);
     }
 
+    /**
+     * Attempts to provide given number of water units
+     *
+     * @param int     $units amount of water requested
+     *
+     * @return bool    true if units are available, otherwise false
+     */
     public function provideWater(int $units) : bool
     {
-        $this->currentWater -= $units;
+        $this->current_water -= $units;
 
-        return (0 <= $this->currentWater);
+        return (0 <= $this->current_water);
     }
 }

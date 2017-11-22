@@ -13,15 +13,37 @@ declare(strict_types = 1);
 namespace cykonetic\SpeciesSimulator;
 
 /**
- * Summary
+ * Provides environments for animals.
+ *
+ * The habitat contains information regarding food and water levels
+ * as well as seasonal temperature variations.
  */
 class Habitat
 {
-    const WINTER = 'winter';
+    /**
+     * Spring flag
+     */
     const SPRING = 'spring';
+    /**
+     * Summer flag
+     */
     const SUMMER = 'summer';
+    /**
+     * Fall flag
+     */
     const FALL   = 'fall';
+    /**
+     * Winter flag
+     */
+    const WINTER = 'winter';
 
+    /**
+     * Returns the season flag for the given month
+     *
+     * @param int     $month month
+     *
+     * @return string    season flag
+     */
     public static function getSeason(int $month) : string
     {
         //this also conveniently makes December == 0
@@ -37,9 +59,21 @@ class Habitat
         return self::FALL;
     }
 
+    /**
+     * @var string habitat's name (forrest, plains, etc.)
+     */
     protected $name;
+    /**
+     * @var int monthly food requirement
+     */
     protected $food;
+    /**
+     * @var int monthly water requirement
+     */
     protected $water;
+    /**
+     * @var int[] season : temperature map
+     */
     protected $avg_temp;
 
     public function __construct(string $name, int $monthly_food, int $monthly_water, array $average_temperature)
@@ -50,21 +84,41 @@ class Habitat
         $this->avg_temp = $average_temperature;
     }
 
+    /**
+     * Gets habitat name
+     *
+     * @return string habitat name
+     */
     public function getName() : string
     {
         return $this->name;
     }
 
+    /**
+     * Gets monthly food provision
+     *
+     * @return int food provision
+     */
     public function getFood() : int
     {
         return $this->food;
     }
 
+    /**
+     * Gets monthly water provision
+     *
+     * @return int water provision
+     */
     public function getWater()
     {
         return $this->water;
     }
 
+    /**
+     * Gets monthly food provision
+     *
+     * @return int food provision
+     */
     public function getTemperature($month)
     {
         //normal fluctuation of 5 degrees with .5% chance of 15

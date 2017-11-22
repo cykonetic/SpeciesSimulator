@@ -23,13 +23,34 @@ use cykonetic\SpeciesSimulator\Exception\Starved;
  */
 class Animal
 {
-    const MALE   = 'male';
+    /**
+     * Female flag
+     */
     const FEMALE = 'female';
+    /**
+     * Male flag
+     */
+    const MALE   = 'male';
 
+    /**
+     * @var Species animal's species
+     */
     protected $species;
+    /**
+     * @var string animal's gender (FEMALE|MALE)
+     */
     protected $gender;
+    /**
+     * @var int animal's age (months)
+     */
     protected $age = 0;
+    /**
+     * @var int animal's hunger level
+     */
     protected $hunger = 0;
+    /**
+     * @var int animal's current gestation time (months)
+     */
     protected $gestation = 0;
 
     public function __construct(Species $species, string $gender = 'unknown')
@@ -92,7 +113,7 @@ class Animal
      *
      * @param Environment $environment is the animal's current habitat
      *
-     * @return Animal which is a reference to $this
+     * @return $this
      */
     protected function tolerate(Environment $environment) : self
     {
@@ -112,7 +133,7 @@ class Animal
      *
      * @throws Starved when the animal fails to eat three consecutive months
      *
-     * @return Animal which is a reference to $this
+     * @return $this
      */
     protected function eat(Environment $environment) : self
     {
@@ -134,7 +155,7 @@ class Animal
      *
      * @throws Dehydrated when the animal fails to drink
      *
-     * @return Animal which is a reference to $this
+     * @return $this
      */
     protected function drink(Environment $environment) : self
     {
@@ -150,7 +171,7 @@ class Animal
      *
      * @throws NaturalCauses if an animal surpasses its maximum age
      *
-     * @return Animal which is a reference to $this
+     * @return $this
      */
     protected function age() : self
     {
@@ -168,7 +189,7 @@ class Animal
      *
      * @param Environment $environment is the animal's current habitat
      *
-     * @return Animal which is a reference to $this
+     * @return $this
      */
     public function copulate(Environment $environment) : self
     {
@@ -215,7 +236,7 @@ class Animal
      *
      * @param Environment $environment is the animal's current habitat
      *
-     * @return Type        Description
+     * @return $this
      */
     public function survive(Environment $environment) : self
     {
@@ -223,12 +244,12 @@ class Animal
 
         shuffle($activities);
 
-        foreach ($activities as $doIt) {
-            if ('age' === $doIt) {
+        foreach ($activities as $survive) {
+            if ('age' === $survive) {
                 $this->age();
             } else {
-                #$this->$doIt($environment);
-                call_user_func(array($this, $doIt), $environment);
+                #$this->$survuve($environment);
+                call_user_func(array($this, $survive), $environment);
             }
         }
 
