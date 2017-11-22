@@ -49,6 +49,15 @@ class Simulator
      */
     protected $ran = false;
 
+    /**
+     * Simulator.
+     *
+     * Runs the configured simulkation
+     *
+     * @param Configuration $config
+     *
+     * @return Simulator
+     */
     public function __construct(Configuration $config)
     {
         $this->habitats = $config->getHabitats();

@@ -1,6 +1,6 @@
 <?php
 /**
- * SpeciesSimulator/Species.php
+ * SpeciesSimulator/Species.php.
  *
  * @package   cykonetic\SpeciesSimulator
  * @link      https://github.com/cykonetic/species-simulator
@@ -15,40 +15,40 @@ namespace cykonetic\SpeciesSimulator;
 use ReflectionClass;
 
 /**
- * Meta information describing aspects of animals
+ * Meta information describing aspects of animals.
  */
 class Species
 {
     /**
-     * Gestation period flag
+     * Gestation period flag.
      */
     const GESTATION = 'gestation_period';
     /**
-     * Life span flag
+     * Life span flag.
      */
     const LIVES     = 'life_span';
     /**
-     * Maximum breeding age flag
+     * Maximum breeding age flag.
      */
     const MAX_AGE   = 'maximum_breeding_age';
     /**
-     * Maximum survivable temperature flag
+     * Maximum survivable temperature flag.
      */
     const MAX_TEMP  = 'maximum_temperature';
     /**
-     * Minimum breeding age flag
+     * Minimum breeding age flag.
      */
     const MIN_AGE   = 'minimum_breeding_age';
     /**
-     * Minimum survivable temperature flag
+     * Minimum survivable temperature flag.
      */
     const MIN_TEMP  = 'minimum_temperature';
     /**
-     * Monthly food requirement flag
+     * Monthly food requirement flag.
      */
     const EATS      = 'monthly_food_consumption';
     /**
-     * Monthly water requirement flag
+     * Monthly water requirement flag.
      */
     const DRINKS    = 'monthly_water_consumption';
 
@@ -74,6 +74,14 @@ class Species
      */
     protected $attributes;
 
+    /**
+     * Simulated Animal Provider.
+     *
+     * @param string  $name
+     * @param array   $attributes
+     *
+     * @return Species
+     */
     public function __construct(string $name, array $attributes)
     {
         $keys = array_keys($attributes);
@@ -117,7 +125,7 @@ class Species
     }
 
     /**
-     * Gets species maximum survivable temperature
+     * Gets species maximum survivable temperature.
      *
      * @return int maximum survivable temperature
      */
@@ -127,7 +135,7 @@ class Species
     }
 
     /**
-     * Gets species minimum survivable temperature
+     * Gets species minimum survivable temperature.
      *
      * @return int minimum survivable temperature
      */
@@ -137,7 +145,7 @@ class Species
     }
 
     /**
-     * Gets species maximum breeding age
+     * Gets species maximum breeding age.
      *
      * @return int maximum breeding age
      */
@@ -147,7 +155,7 @@ class Species
     }
 
     /**
-     * Gets species minimum breeding age
+     * Gets species minimum breeding age.
      *
      * @return int minimum breeding age
      */

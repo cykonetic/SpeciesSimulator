@@ -41,6 +41,14 @@ class Population
      */
     protected $stats;
 
+    /**
+     * Simulated Population.
+     *
+     * @param Habitat $habitat
+     * @param Species $species
+     *
+     * @return Population
+     */
     public function __construct(Habitat $habitat, Species $species)
     {
         $this->habitat = $habitat;
@@ -113,7 +121,7 @@ class Population
     }
 
     /**
-     * Gets the population's size
+     * Gets the population's size.
      *
      * @return int population size
      */
@@ -133,7 +141,7 @@ class Population
     }
 
     /**
-     * Simulates a population for a given month
+     * Simulates a population for a given month.
      *
      * @param int $month month to simulate
      *

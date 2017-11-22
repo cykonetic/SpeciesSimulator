@@ -30,6 +30,14 @@ class Environment
      */
     protected $current_temp;
 
+    /**
+     * Simulated Environmant.
+     *
+     * @param Habitat $habitat
+     * @param int     $month
+     *
+     * @return Environment
+     */
     public function __construct(Habitat $habitat, int $month)
     {
         $this->current_food  = $habitat->getFood();
@@ -68,7 +76,7 @@ class Environment
     }
 
     /**
-     * Attempts to provide given number of food units
+     * Attempts to provide given number of food units.
      *
      * @param int     $units amount of food requested
      *
@@ -82,7 +90,7 @@ class Environment
     }
 
     /**
-     * Attempts to provide given number of water units
+     * Attempts to provide given number of water units.
      *
      * @param int     $units amount of water requested
      *

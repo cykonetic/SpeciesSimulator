@@ -1,6 +1,6 @@
 <?php
 /**
- * SpeciesSimulator/Environment.php
+ * SpeciesSimulator/Environment.php.
  *
  * @link      https://github.com/cykonetic/species-simulator
  * @author    Nicholai Bush <nicholaibush@yahoo.com>
@@ -17,7 +17,7 @@ use cykonetic\SpeciesSimulator\Habitat;
 use cykonetic\SpeciesSimulator\Species;
 
 /**
- * Configuration used to setup Simulator
+ * Configuration used to setup Simulator.
  */
 class Configuration
 {
@@ -67,7 +67,7 @@ class Configuration
     }
 
     /**
-     * Builds a Cunfiguration given a YAML configuration file name
+     * Builds a Cunfiguration given a YAML configuration file name.
      *
      * @param string  $config_yaml YAML file name
      *
@@ -100,6 +100,16 @@ class Configuration
      */
     protected $iterations;
 
+    /**
+     * Simulator Configuration.
+     *
+     * @param Habitat[]   $habitats
+     * @param Species[]   $species
+     * @param int     $years
+     * @param int     $iterations
+     *
+     * @return Configuration
+     */
     public function __construct(array $habitats, array $species, int $years = 100, int $iterations = 10)
     {
         $this->habitats = $habitats;
@@ -109,7 +119,7 @@ class Configuration
     }
 
     /**
-     * Gets the habitats to simulate
+     * Gets the habitats to simulate.
      *
      * @return Habitat[] habitats to simulate
      */
@@ -119,7 +129,7 @@ class Configuration
     }
 
     /**
-     * Gets the dpecies to simulate
+     * Gets the dpecies to simulate.
      *
      * @return Species[] species to simulate
      */
@@ -129,7 +139,7 @@ class Configuration
     }
 
     /**
-     * Gets the length of simulation (in months)
+     * Gets the length of simulation (in months).
      *
      * @return int months of simulation
      */
@@ -139,7 +149,7 @@ class Configuration
     }
 
     /**
-     * Gets the number of repititions for simulations
+     * Gets the number of repititions for simulations.
      *
      * @return int repititions of simulation
      */

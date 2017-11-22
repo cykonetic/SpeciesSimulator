@@ -1,6 +1,6 @@
 <?php
 /**
- * SpeciesSimulator/Helper/PopulationData.php
+ * SpeciesSimulator/Helper/PopulationData.php.
  *
  * @link      https://github.com/cykonetic/species-simulator
  * @author    Nicholai Bush <nicholaibush@yahoo.com>
@@ -32,6 +32,14 @@ class PopulationData
      */
     protected $raw_data;
 
+    /**
+     * Population Simulation Data.
+     *
+     * @param Habitat $habitat
+     * @param Species $species
+     *
+     * @return PopulationData
+     */
     public function __construct(Habitat $habitat, Species $species)
     {
         $this->habitat = $habitat;

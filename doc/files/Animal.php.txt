@@ -1,0 +1,266 @@
+<?php
+/**
+ * SpeciesSimulator/Animal.php
+ *
+ * @package   cykonetic\SpeciesSimulator
+ * @link      https://github.com/cykonetic/species-simulator
+ * @author    Nicholai Bush <nicholaibush@yahoo.com>
+ * @copyright Copyright (c) 2017 Nicholai Bush <nicholaibush@yahoo.com>
+ * @license   https://raw.githubusercontent.com/cykonetic/species-simulator/master/MIT.license.txtdataProvider
+ */
+declare(strict_types = 1);
+
+namespace cykonetic\SpeciesSimulator;
+
+use cykonetic\SpeciesSimulator\Exception\Dehydrated;
+use cykonetic\SpeciesSimulator\Exception\Froze;
+use cykonetic\SpeciesSimulator\Exception\NaturalCauses;
+use cykonetic\SpeciesSimulator\Exception\Overheated;
+use cykonetic\SpeciesSimulator\Exception\Starved;
+/**
+ * Represents an incarnation of a species
+ */
+class Animal
+{
+    /**
+     * Female flag.
+     */
+    const FEMALE = 'female';
+    /**
+     * Male flag.
+     */
+    const MALE   = 'male';
+
+    /**
+     * @var Species animal's species
+     */
+    protected $species;
+    /**
+     * @var string animal's gender (FEMALE|MALE)
+     */
+    protected $gender;
+    /**
+     * @var int animal's age (months)
+     */
+    protected $age = 0;
+    /**
+     * @var int animal's hunger level
+     */
+    protected $hunger = 0;
+    /**
+     * @var int animal's current gestation time (months)
+     */
+    protected $gestation = 0;
+
+    /**
+     * Simulated Animal.
+     *
+     * @param Species $species
+     * @param string  $gender
+     *
+     * @return Animal
+     */
+    public function __construct(Species $species, string $gender = 'unknown')
+    {
+        $this->species = $species;
+
+        if (!in_array($gender, array(self::FEMALE, self::MALE))) {
+            $gender = rand(0, 1) ? self::FEMALE : self::MALE;
+        }
+
+        $this->gender = $gender;
+    }
+
+    /**
+     * Returns true if the animal is male, otherwise false.
+     *
+     * @return bool true if the animal is male
+     */
+    public function isMale() : bool
+    {
+        return (self::MALE === $this->gender);
+    }
+
+    /**
+     * Returns true if the animal is female, otherwise false.
+     *
+     * @return bool true if the animal is female
+     */
+    public function isFemale() : bool
+    {
+        return (self::FEMALE === $this->gender);
+    }
+
+    /**
+     * Returns true if the animal is within breeding ages.
+     *
+     * Checks that the animals is older than the minimum breeding
+     * age but not older than the maximum breeding age
+     *
+     * @return bool true if the animal is mature
+     */
+    public function isMature() : bool
+    {
+        return ($this->species->getMinimumBreeding() * 12 <= $this->age)
+            && ($this->species->getMaximumBreeding() * 12 >= $this->age);
+    }
+
+    /**
+     * Returns true if the animal is pregnant.
+     *
+     * @return bool true if the animal is pregnant
+     */
+    public function isPregnant() : bool
+    {
+        return $this->gestation > 0;
+    }
+
+    /**
+     * Determines if an animal survives temperatures.
+     *
+     * @param Environment $environment is the animal's current habitat
+     *
+     * @return $this
+     */
+    protected function tolerate(Environment $environment) : self
+    {
+        if ($environment->getTemperature() > $this->species->getMaximumTolerance()) {
+            throw new Overheated();
+        } elseif ($environment->getTemperature() < $this->species->getMinimumTolerance()) {
+            throw new Froze();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Handle an animal's monthly food requirements.
+     *
+     * @param Environment $environment is the animal's current habitat
+     *
+     * @throws Starved when the animal fails to eat three consecutive months
+     *
+     * @return $this
+     */
+    protected function eat(Environment $environment) : self
+    {
+        $this->hunger += 1;
+
+        if ($environment->provideFood($this->species->getRequiredFood())) {
+            $this->hunger = 0;
+        } elseif (2 < $this->hunger) {
+            throw new Starved();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Handle an animal's monthly water requirements.
+     *
+     * @param Environment $environment is the animal's current habitat
+     *
+     * @throws Dehydrated when the animal fails to drink
+     *
+     * @return $this
+     */
+    protected function drink(Environment $environment) : self
+    {
+        if (!$environment->provideWater($this->species->getRequiredWater())) {
+            throw new Dehydrated();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Handle an animal getting older.
+     *
+     * @throws NaturalCauses if an animal surpasses its maximum age
+     *
+     * @return $this
+     */
+    protected function age() : self
+    {
+        $this->age += 1;
+
+        if ($this->species->getMaximumAge() * 12 < $this->age) {
+            throw new NaturalCauses();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Determines if an animal becomes pregnant.
+     *
+     * @param Environment $environment is the animal's current habitat
+     *
+     * @return $this
+     */
+    public function copulate(Environment $environment) : self
+    {
+        if ($this->isFemale()
+            && $this->isMature()
+            && !$this->isPregnant()
+            && ((rand(1, 200) == 1)
+            || ((0 < $environment->getFood())
+            && (0 < $environment->getWater())))
+        ) {
+            $this->gestate();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Increases a pregnant animal's gestation period.
+     *
+     * If the gestation period has been reached this will reset the gestaion
+     * and returns the new animal, otherwise returns null
+     *
+     * @return Animal|null an animal if the gestation period has been reached
+     */
+    public function gestate() //: ? Animal
+    {
+        $this->gestation += 1;
+
+        if ($this->species->getGestationPeriod() < $this->gestation) {
+            $this->gestation = 0;
+
+            return new Animal($this->species);
+        }
+
+        return null;
+    }
+
+    /**
+     * Determines if an animal survives this month.
+     *
+     * Each animal must eat, drink, cope with the temperatures, and get older.
+     * This method randomizes the order for each animal and attempts to complete
+     * all four.
+     *
+     * @param Environment $environment is the animal's current habitat
+     *
+     * @return $this
+     */
+    public function survive(Environment $environment) : self
+    {
+        $activities = array('age','drink','eat','tolerate');
+
+        shuffle($activities);
+
+        foreach ($activities as $survive) {
+            if ('age' === $survive) {
+                $this->age();
+            } else {
+                #$this->$survuve($environment);
+                call_user_func(array($this, $survive), $environment);
+            }
+        }
+
+        return $this;
+    }
+}
+

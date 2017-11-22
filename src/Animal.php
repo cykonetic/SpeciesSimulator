@@ -23,11 +23,11 @@ use cykonetic\SpeciesSimulator\Exception\Starved;
 class Animal
 {
     /**
-     * Female flag
+     * Female flag.
      */
     const FEMALE = 'female';
     /**
-     * Male flag
+     * Male flag.
      */
     const MALE   = 'male';
 
@@ -52,6 +52,14 @@ class Animal
      */
     protected $gestation = 0;
 
+    /**
+     * Simulated Animal.
+     *
+     * @param Species $species
+     * @param string  $gender
+     *
+     * @return Animal
+     */
     public function __construct(Species $species, string $gender = 'unknown')
     {
         $this->species = $species;
@@ -213,7 +221,7 @@ class Animal
      *
      * @return Animal|null an animal if the gestation period has been reached
      */
-    public function gestate() : ?Animal
+    public function gestate() //: ? Animal
     {
         $this->gestation += 1;
 
@@ -227,7 +235,7 @@ class Animal
     }
 
     /**
-     * Determines if an animal survives this month
+     * Determines if an animal survives this month.
      *
      * Each animal must eat, drink, cope with the temperatures, and get older.
      * This method randomizes the order for each animal and attempts to complete

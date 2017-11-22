@@ -1,6 +1,6 @@
 <?php
 /**
- * SpeciesSimulator/Habitat.php
+ * SpeciesSimulator/Habitat.php.
  *
  * @package   cykonetic\SpeciesSimulator
  * @link      https://github.com/cykonetic/species-simulator
@@ -38,7 +38,7 @@ class Habitat
     const WINTER = 'winter';
 
     /**
-     * Returns the season flag for the given month
+     * Returns the season flag for the given month.
      *
      * @param int     $month month
      *
@@ -76,6 +76,16 @@ class Habitat
      */
     protected $avg_temp;
 
+    /**
+     * Simulated Environment Provider.
+     *
+     * @param string  $name
+     * @param int     $monthly_food
+     * @param int     $monthly_water
+     * @param array   $average_temperature
+     *
+     * @return Habitat
+     */
     public function __construct(string $name, int $monthly_food, int $monthly_water, array $average_temperature)
     {
         $this->name = $name;
@@ -85,7 +95,7 @@ class Habitat
     }
 
     /**
-     * Gets habitat name
+     * Gets habitat name.
      *
      * @return string habitat name
      */
@@ -95,7 +105,7 @@ class Habitat
     }
 
     /**
-     * Gets monthly food provision
+     * Gets monthly food provision.
      *
      * @return int food provision
      */
@@ -105,7 +115,7 @@ class Habitat
     }
 
     /**
-     * Gets monthly water provision
+     * Gets monthly water provision.
      *
      * @return int water provision
      */
@@ -115,11 +125,13 @@ class Habitat
     }
 
     /**
-     * Gets monthly food provision
+     * Gets monthly temperature.
      *
-     * @return int food provision
+     * @param int $month to retrieve temperature for
+     *
+     * @return int temperature
      */
-    public function getTemperature($month)
+    public function getTemperature(int $month) : int
     {
         //normal fluctuation of 5 degrees with .5% chance of 15
         $max_range = !rand(0, 199) ? 15 : 5;
